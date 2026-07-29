@@ -1,0 +1,55 @@
+{
+  "name": "promptbooster",
+  "version": "1.0.0",
+  "description": "System-wide AI prompt enhancer for Windows",
+  "main": "electron/main.js",
+  "author": "PromptBooster",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev:vite": "vite",
+    "dev": "concurrently -k \"npm:dev:vite\" \"npm:dev:electron\"",
+    "dev:electron": "wait-on tcp:5173 && cross-env NODE_ENV=development electron .",
+    "build:vite": "vite build",
+    "build": "npm run build:vite && electron-builder",
+    "gen-icons": "node scripts/generate-icons.js",
+    "test:capture": "electron scripts/test-capture.js selection && electron scripts/test-capture.js fallback",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@nut-tree-fork/nut-js": "^4.2.0",
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^29.4.6",
+    "electron-builder": "^24.13.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.4.1",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.promptbooster.app",
+    "productName": "PromptBooster",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
